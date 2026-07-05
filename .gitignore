@@ -1,0 +1,18 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Environment files
+.env
+venv/
+.venv/
+
+# Mac files
+.DS_Store
+
+# Streamlit
+.streamlit/secrets.toml
