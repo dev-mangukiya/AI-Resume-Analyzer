@@ -27,9 +27,67 @@ uploaded_file = st.file_uploader(
     type=["pdf"]
 )
 
-job_description = st.text_area(
-    "Paste Job Description"
+# -------------------------
+# Preloaded Job Descriptions
+# -------------------------
+
+jd_templates = {
+
+    "AI/ML Intern": """
+We are looking for an AI/ML Intern skilled in Python, Machine Learning, Deep Learning,
+NLP, Computer Vision, TensorFlow, PyTorch, Scikit-learn, Pandas, NumPy,
+LLMs, RAG, LangChain, FastAPI, Docker, Git and AWS.
+
+Responsibilities include building ML models, data preprocessing,
+model evaluation, AI application development and deployment.
+""",
+
+    "Data Analyst Intern": """
+We are looking for a Data Analyst Intern with skills in SQL, Python,
+Excel, Power BI, Tableau, Pandas, NumPy, Data Visualization and Statistics.
+
+Responsibilities include cleaning data, creating dashboards,
+analyzing trends and generating business insights.
+""",
+
+    "Software Developer Intern": """
+We are looking for a Software Developer Intern with knowledge of Python,
+Java, Data Structures, Algorithms, REST APIs, Git, Databases,
+Object Oriented Programming and Web Development.
+
+Responsibilities include developing applications, debugging,
+API integration and writing clean scalable code.
+""",
+
+    "Marketing Intern": """
+We are looking for a Marketing Intern skilled in Digital Marketing,
+SEO, SEM, Social Media Marketing, Content Creation, Market Research,
+Google Analytics, Email Marketing, Branding and Communication.
+
+Responsibilities include running campaigns, analyzing marketing data,
+creating content and improving customer engagement.
+"""
+
+}
+
+
+selected_role = st.selectbox(
+    "Choose Job Role",
+    list(jd_templates.keys()) + ["Custom JD"]
 )
+
+
+if selected_role == "Custom JD":
+    job_description = st.text_area(
+        "Paste Custom Job Description"
+    )
+else:
+    job_description = st.text_area(
+        "Job Description",
+        jd_templates[selected_role],
+        height=250
+    )
+
 
 if uploaded_file:
 
