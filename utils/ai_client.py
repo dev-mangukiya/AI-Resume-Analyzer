@@ -1,9 +1,5 @@
-import os
-from dotenv import load_dotenv
+import streamlit as st
 from google import genai
-
-
-load_dotenv()
 
 
 # --------------------------------
@@ -12,7 +8,7 @@ load_dotenv()
 
 def get_ai_client():
 
-    api_key = os.getenv("GOOGLE_API_KEY")
+    api_key = st.secrets.get("GOOGLE_API_KEY")
 
     if not api_key:
         return None
@@ -37,7 +33,7 @@ def generate_resume_review(
     client = get_ai_client()
 
 
-    # Demo Mode
+    # Demo fallback
     if not client:
 
         return f"""
@@ -67,7 +63,6 @@ Use:
 
 Action + Technology + Result
 
-
 Example:
 
 ❌ Built ML model
@@ -80,7 +75,6 @@ Example:
 You are an expert AI resume reviewer.
 
 Analyze this resume:
-
 
 Resume:
 {resume_text[:4000]}
@@ -102,7 +96,7 @@ Missing Skills:
 {missing_skills}
 
 
-Give:
+Provide:
 
 1. Strengths
 2. Weaknesses
@@ -110,7 +104,7 @@ Give:
 4. Project improvements
 5. ATS optimization tips
 
-Keep advice practical.
+Keep feedback practical.
 """
 
 
@@ -173,12 +167,12 @@ Suggestions:
     prompt = f"""
 You are an AI Career Assistant.
 
-Answer ONLY using resume information.
+Answer based only on this candidate information.
 
 
 Resume:
 
-{resume_text}
+{resume_text[:4000]}
 
 
 Target Job:
@@ -256,16 +250,16 @@ def generate_career_roadmap(
 
 Week 1:
 - Strengthen fundamentals
-- Learn missing basics
+- Learn missing concepts
 
 
 Week 2:
-- Learn tools
+- Learn required tools
 - Complete tutorials
 
 
 Week 3:
-- Build GitHub projects
+- Build portfolio projects
 - Deploy applications
 
 
@@ -274,11 +268,11 @@ Week 4:
 - Prepare interviews
 
 
-Projects:
+Suggested Projects:
 
 🚀 AI Chatbot
 
-🚀 ML Web App
+🚀 ML Web Application
 
 🚀 Dashboard Project
 """
@@ -287,7 +281,7 @@ Projects:
     prompt = f"""
 You are an AI Career Mentor.
 
-Generate a personalized 30 day roadmap.
+Generate a personalized 30-day roadmap.
 
 
 Target Job:
@@ -308,9 +302,9 @@ Missing Skills:
 Include:
 
 1. Current analysis
-2. Week 1 plan
-3. Week 2 plan
-4. Week 3 projects
+2. Week 1 learning plan
+3. Week 2 skill improvement
+4. Week 3 project building
 5. Week 4 interview preparation
 6. Recommended GitHub projects
 """
