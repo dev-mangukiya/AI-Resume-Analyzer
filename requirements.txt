@@ -1,0 +1,9 @@
+streamlit
+pdfplumber
+pandas
+numpy
+scikit-learn
+nltk
+spacy
+PyPDF2
+requests
