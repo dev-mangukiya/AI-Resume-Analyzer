@@ -7,3 +7,5 @@ nltk
 spacy
 PyPDF2
 requests
+python-dotenv
+google-genai
