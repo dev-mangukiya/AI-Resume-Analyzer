@@ -1,5 +1,14 @@
+import os
 import streamlit as st
+from dotenv import load_dotenv
 from google import genai
+
+
+# --------------------------------
+# Load local .env file
+# --------------------------------
+
+load_dotenv()
 
 
 # --------------------------------
@@ -8,10 +17,24 @@ from google import genai
 
 def get_ai_client():
 
-    api_key = st.secrets.get("GOOGLE_API_KEY")
+    api_key = None
+
+
+    # Streamlit Cloud Secrets
+    try:
+        api_key = st.secrets.get("GOOGLE_API_KEY")
+    except Exception:
+        pass
+
+
+    # Local .env fallback
+    if not api_key:
+        api_key = os.getenv("GOOGLE_API_KEY")
+
 
     if not api_key:
         return None
+
 
     return genai.Client(
         api_key=api_key
