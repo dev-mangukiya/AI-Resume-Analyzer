@@ -1,81 +1,117 @@
 # 📄 AI Resume Analyzer
 
-An AI-powered resume analysis tool that evaluates resumes against job descriptions and provides ATS insights, skill extraction, and improvement suggestions.
+An AI-powered resume analysis tool that helps job seekers optimize their resumes by comparing them with job descriptions and providing ATS-style feedback.
 
-## 🚀 Features
+The application extracts resume content, analyzes skills, identifies missing keywords, and generates an ATS compatibility score to improve resume-job matching.
 
-- 📄 PDF Resume Upload
-- 🧠 Resume Text Extraction
-- 📊 ATS Score Calculation
-- 🔍 Skill Detection
-- 🎯 Missing Keyword Analysis
-- 💡 AI-based Resume Suggestions
-- ⚡ Interactive Streamlit Web Interface
+---
+
+## 🚀 Live Demo
+
+🔗 Try the app here:  
+https://dev-ai-resume-analyzer.streamlit.app/
+
+---
+
+## ✨ Features
+
+- 📄 PDF Resume Upload & Text Extraction
+- 🎯 ATS Compatibility Score Calculation
+- 🔍 Resume Skill Extraction
+- 📌 Missing Keyword Detection
+- 🤖 AI-based Resume Suggestions
+- 💼 Preloaded Job Description Templates
+  - AI/ML Intern
+  - Data Science Intern
+  - Marketing Intern
+- 📝 Custom Job Description Support
+- 🌐 Deployed Web Application
+
+---
 
 ## 🛠️ Tech Stack
 
+**Programming Language**
 - Python
+
+**Framework**
 - Streamlit
-- Natural Language Processing (NLP)
-- PyPDF
-- Machine Learning Concepts
+
+**Libraries & Tools**
+- pdfplumber
+- spaCy
+- NLP Processing
+- Regex
 - Git & GitHub
 
+---
+
+## ⚙️ How It Works
+
+1. User uploads a resume PDF
+
+2. Resume text is extracted using PDF parsing
+
+3. NLP techniques identify important skills and keywords
+
+4. User selects a job role or enters a custom job description
+
+5. Resume content is compared with job requirements
+
+6. The system generates:
+   - ATS Score
+   - Skills Found
+   - Missing Keywords
+   - Improvement Suggestions
+
+---
+
+## 📸 Screenshots
+
+### 🏠 Home Page
+![Home Page](images/home.png)
+
+### 📊 Analysis Result
+![Analysis Result](images/result.png)
 
 ## 📂 Project Structure
-
-```
 AI-Resume-Analyzer/
 
-├── app.py
-├── requirements.txt
-├── README.md
+│── app.py
+│── requirements.txt
+│── README.md
+│── .gitignore
+
+├── utils/
+│ ├── pdf_parser.py
+│ ├── nlp_utils.py
+│ └── scorer.py
+
 ├── data/
-└── utils/
-    ├── pdf_parser.py
-    ├── nlp_utils.py
-    ├── scorer.py
-    └── ai_client.py
-```
+│ └── skills_db.py
 
+---
 
-## ⚙️ Installation
+## 🔮 Future Improvements
 
-Clone the repository:
+- AI-powered resume rewriting suggestions
+- Multiple resume comparison
+- Advanced ATS scoring model
+- Resume formatting analysis
+- User dashboard
 
-```bash
-git clone https://github.com/dev-mangukiya/AI-Resume-Analyzer.git
-```
-
-Go inside folder:
-
-```bash
-cd AI-Resume-Analyzer
-```
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-Run application:
-
-```bash
-streamlit run app.py
-```
-
-
-## 📌 Future Improvements
-
-- LLM powered resume feedback
-- Resume ranking system
-- Job recommendation system
-- Advanced ATS optimization
-
+---
 
 ## 👨‍💻 Developer
 
-Dev Mangukiya
+Built by **Dev Mangukiya**
 
-B.Tech Artificial Intelligence & Data Science
+Connect with me:
+
+LinkedIn: www.linkedin.com/in/devmangukiya
+
+GitHub: https://github.com/dev-mangukiya
+
+---
+
+⭐ If you like this project, consider giving it a star!
