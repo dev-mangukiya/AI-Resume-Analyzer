@@ -1,279 +1,167 @@
 import streamlit as st
+import time
+import plotly.graph_objects as go
 
 from utils.pdf_parser import extract_text_from_pdf
 from utils.nlp_utils import extract_skills, missing_skills
 from utils.scorer import calculate_ats_score
-
-from utils.ai_client import (
-    generate_resume_review,
-    chat_with_resume,
-    generate_career_roadmap
-)
-
+from utils.ai_client import generate_resume_review, chat_with_resume
 
 # -------------------------------
-# Page Config
+# Page Config & Custom Styling
 # -------------------------------
+st.set_page_config(page_title="Nexus | AI Resume", page_icon="⚡", layout="wide")
 
-st.set_page_config(
-    page_title="AI Resume Analyzer",
-    page_icon="📄",
-    layout="wide"
-)
-
-
-# -------------------------------
-# Sidebar
-# -------------------------------
-
-with st.sidebar:
-
-    st.title("🚀 AI Resume Analyzer")
-
-    st.markdown(
-        """
-### Your personal AI career assistant
-
-Upload your resume, compare it with a job role,
-and get AI-powered improvement suggestions.
-        """
-    )
-
-    st.divider()
-
-    st.subheader("Features")
-
-    st.write(
-        """
-✅ ATS Score  
-🧠 AI Resume Review  
-🤖 Resume Chat  
-🗺 Career Roadmap  
-📊 Skill Analysis
-        """
-    )
-
-    st.divider()
-
-    st.caption(
-        "Built with Python + Streamlit + Generative AI"
-    )
-
+st.markdown("""
+    <style>
+    /* Glassmorphism Cards */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    /* Accent Buttons */
+    .stButton>button {
+        background-color: #00f2fe;
+        color: #000000 !important;
+        font-weight: 800;
+        border-radius: 8px;
+        border: none;
+        transition: 0.3s;
+    }
+    .stButton>button:hover {
+        background-color: #4facfe;
+        transform: scale(1.02);
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 # -------------------------------
-# Main Page
+# State Management
 # -------------------------------
-
-st.title("📄 AI Resume Analyzer")
-
-st.write(
-    """
-Upload your resume and get:
-
-- ATS Score
-- Skills Analysis
-- Missing Keywords
-- AI Suggestions
-- Resume Chat Assistant
-    """
-)
-
-
-uploaded_file = st.file_uploader(
-    "Upload your resume PDF",
-    type=["pdf"]
-)
-
+state_vars = ['resume_text', 'skills', 'missing', 'ats_score', 'ai_review', 'chat_history']
+for var in state_vars:
+    if var not in st.session_state:
+        st.session_state[var] = None if var != 'chat_history' else []
 
 # -------------------------------
-# Job Descriptions
+# Gauge Chart Helper
 # -------------------------------
+def draw_gauge(score):
+    fig = go.Figure(go.Indicator(
+        mode = "gauge+number",
+        value = score,
+        domain = {'x': [0, 1], 'y': [0, 1]},
+        title = {'text': "ATS Match Rate", 'font': {'size': 24}},
+        gauge = {
+            'axis': {'range': [None, 100], 'tickwidth': 1, 'tickcolor': "darkblue"},
+            'bar': {'color': "#00f2fe"},
+            'bgcolor': "rgba(0,0,0,0)",
+            'steps': [
+                {'range': [0, 50], 'color': "rgba(255, 99, 132, 0.3)"},
+                {'range': [50, 80], 'color': "rgba(255, 206, 86, 0.3)"},
+                {'range': [80, 100], 'color': "rgba(75, 192, 192, 0.3)"}],
+        }
+    ))
+    fig.update_layout(height=300, margin=dict(l=20, r=20, t=50, b=20), paper_bgcolor="rgba(0,0,0,0)")
+    return fig
+
+# -------------------------------
+# UI Layout
+# -------------------------------
+st.title("⚡ Nexus AI Engine")
+st.markdown("Upload your resume and target role to generate a data-driven application strategy.")
 
 jd_templates = {
-
-    "AI/ML Intern": """
-We are looking for an AI/ML Intern skilled in Python,
-Machine Learning, Deep Learning, NLP, Computer Vision,
-TensorFlow, PyTorch, Scikit-learn, Pandas, NumPy,
-LLMs, RAG, LangChain, FastAPI, Docker, Git and AWS.
-""",
-
-    "Data Analyst Intern": """
-Looking for Data Analyst Intern skilled in SQL, Python,
-Excel, Power BI, Tableau, Pandas, NumPy,
-Statistics and Data Visualization.
-""",
-
-    "Software Developer Intern": """
-Looking for Software Developer Intern skilled in Python,
-Java, Data Structures, Algorithms, REST APIs,
-Git, Databases and Web Development.
-"""
-
+    "AWS Cloud Infrastructure Engineer": "Looking for a Cloud Engineer skilled in AWS Well-Architected Framework, EC2, S3, Docker, Kubernetes, CI/CD, Python, and Infrastructure as Code.",
+    "Security & Cryptography Analyst": "Seeking an analyst with deep knowledge of RSA algorithms, data structures, network security protocols, Python, and penetration testing.",
+    "Data Scientist / AI Engineer": "Seeking an AI engineer skilled in Machine Learning, Neural Networks, Python, TensorFlow, PyTorch, RAG architectures, and SQL."
 }
 
-
-selected_role = st.selectbox(
-    "Choose Job Role",
-    list(jd_templates.keys()) + ["Custom JD"]
-)
-
-
-if selected_role == "Custom JD":
-
-    job_description = st.text_area(
-        "Paste Job Description"
-    )
-
-else:
-
-    job_description = st.text_area(
-        "Job Description",
-        jd_templates[selected_role],
-        height=250
-    )
-
+col1, col2 = st.columns([1, 1.5])
+with col1:
+    uploaded_file = st.file_uploader("Drop Resume PDF", type=["pdf"])
+with col2:
+    selected_role = st.selectbox("Select Target Role", list(jd_templates.keys()) + ["Custom Job Description"])
+    job_description = st.text_area("Requirements", jd_templates.get(selected_role, ""), height=120)
 
 # -------------------------------
-# Resume Processing
+# Processing Engine
 # -------------------------------
-
-if uploaded_file:
-
-    st.success("Resume uploaded successfully!")
-
-    resume_text = extract_text_from_pdf(uploaded_file)
-
-
-    skills = extract_skills(
-        resume_text
-    )
-
-
-    missing = missing_skills(
-        skills,
-        job_description
-    )
-
-
-    ats_score = calculate_ats_score(
-        skills,
-        missing,
-        resume_text
-    )
-
-
-    # -------------------------------
-    # ATS Dashboard
-    # -------------------------------
-
-    col1, col2, col3 = st.columns(3)
-
-
-    with col1:
-
-        st.metric(
-            "ATS Score",
-            ats_score
+if uploaded_file and st.button("Initialize Scan", type="primary", use_container_width=True):
+    with st.spinner("Extracting parameters and running NLP analysis..."):
+        time.sleep(1) # Fake loading for dramatic effect
+        st.session_state.resume_text = extract_text_from_pdf(uploaded_file)
+        st.session_state.skills = extract_skills(st.session_state.resume_text)
+        st.session_state.missing = missing_skills(st.session_state.skills, job_description)
+        st.session_state.ats_score = calculate_ats_score(st.session_state.skills, st.session_state.missing, st.session_state.resume_text)
+        
+        # Automatically generate the JSON review in the background
+        st.session_state.ai_review = generate_resume_review(
+            st.session_state.resume_text, job_description, st.session_state.skills, 
+            st.session_state.missing, st.session_state.ats_score
         )
 
-
-    with col2:
-
-        st.metric(
-            "Skills Found",
-            len(skills)
-        )
-
-
-    with col3:
-
-        st.metric(
-            "Missing Keywords",
-            len(missing)
-        )
-
-
-    st.subheader("Skills Detected")
-    st.write(skills)
-
-
-    st.subheader("Missing Skills")
-    st.write(missing)
-
-
-
-    # -------------------------------
-    # AI Resume Review
-    # -------------------------------
-
+# -------------------------------
+# Results Dashboard
+# -------------------------------
+if st.session_state.resume_text:
     st.divider()
+    
+    t1, t2, t3 = st.tabs(["📊 Analytics", "🧠 AI Deep Dive", "🤖 Career Chat"])
+    
+    with t1:
+        c1, c2 = st.columns([1.5, 1])
+        with c1:
+            st.plotly_chart(draw_gauge(st.session_state.ats_score), use_container_width=True)
+        with c2:
+            st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+            st.subheader("Skill Matrix")
+            st.success(f"✅ Found: {len(st.session_state.skills)} keywords")
+            st.error(f"⚠️ Missing: {len(st.session_state.missing)} keywords")
+            with st.expander("View Missing Skills"):
+                st.write(", ".join(st.session_state.missing))
+            st.markdown('</div>', unsafe_allow_html=True)
 
-    st.subheader("🧠 AI Resume Review")
+    with t2:
+        review_data = st.session_state.ai_review
+        
+        if "error" in review_data:
+            st.error(f"Analysis failed: {review_data['error']}")
+        else:
+            st.markdown(f"### 🎯 Executive Summary\n> {review_data.get('executive_summary', '')}")
+            
+            col_s, col_w = st.columns(2)
+            with col_s:
+                st.markdown("#### 💪 Core Strengths")
+                for s in review_data.get('strengths', []): st.write(f"✅ {s}")
+            with col_w:
+                st.markdown("#### 🚩 Risk Areas")
+                for w in review_data.get('weaknesses', []): st.write(f"⚠️ {w}")
+            
+            st.divider()
+            st.markdown("#### ✍️ Bullet Point Surgery (Before & After)")
+            for bullet in review_data.get('bullet_point_improvements', []):
+                with st.expander(f"Fix: '{bullet.get('before')}'"):
+                    st.error(f"❌ {bullet.get('before')}")
+                    st.success(f"✅ {bullet.get('after')}")
 
+    with t3:
+        for msg in st.session_state.chat_history:
+            with st.chat_message(msg["role"]): st.markdown(msg["content"])
 
-    if st.button("Generate AI Feedback"):
+        if prompt := st.chat_input("Ask how to tailor your resume for this specific role..."):
+            st.session_state.chat_history.append({"role": "user", "content": prompt})
+            with st.chat_message("user"): st.markdown(prompt)
 
-        review = generate_resume_review(
-            resume_text,
-            job_description,
-            skills,
-            missing,
-            ats_score
-        )
-
-
-        st.markdown(review)
-
-
-
-    # -------------------------------
-    # Resume Chat Assistant
-    # -------------------------------
-
-    st.divider()
-
-
-    st.subheader("🤖 Resume Chat Assistant")
-
-
-    user_question = st.text_input(
-        "Ask AI about your resume"
-    )
-
-
-    if user_question:
-
-        answer = chat_with_resume(
-            user_question,
-            resume_text,
-            job_description,
-            skills,
-            missing
-        )
-
-
-        st.markdown(answer)
-            # -------------------------------
-    # Career Roadmap
-    # -------------------------------
-
-    st.divider()
-
-    st.subheader("🗺 AI Career Roadmap")
-
-
-    if st.button("Generate Career Roadmap"):
-
-
-        roadmap = generate_career_roadmap(
-            job_description,
-            skills,
-            missing
-        )
-
-
-        st.markdown(roadmap)
+            with st.chat_message("assistant"):
+                with st.spinner("Analyzing..."):
+                    answer = chat_with_resume(prompt, st.session_state.resume_text, job_description, st.session_state.skills, st.session_state.missing)
+                    st.markdown(answer)
+                    st.session_state.chat_history.append({"role": "assistant", "content": answer})
 
         
          

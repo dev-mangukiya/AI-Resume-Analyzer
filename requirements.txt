@@ -1,11 +1,11 @@
+# UI & Visualization
 streamlit
+plotly
+
+# PDF Processing
 pdfplumber
-pandas
-numpy
-scikit-learn
-nltk
-spacy
 PyPDF2
-requests
-python-dotenv
+
+# AI & Environment
 google-genai
+python-dotenv

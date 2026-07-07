@@ -1,244 +1,142 @@
-# 📄 AI Resume Analyzer
+```markdown
+<div align="center">
+  
+# ⚡ Nexus | AI Resume Intelligence Engine
 
-An AI-powered resume analysis platform that helps job seekers improve their resumes by comparing them with job descriptions and providing ATS-style feedback with Generative AI.
+*A production-grade, AI-powered ATS scanner and career strategy platform.*
 
-The application extracts resume content, analyzes skills, detects missing keywords, calculates ATS compatibility scores, and provides personalized AI recommendations to improve resume quality.
+[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.32+-red.svg)](https://streamlit.io/)
+[![Gemini](https://img.shields.io/badge/Google_Gemini-2.5_Flash-orange.svg)](https://deepmind.google/technologies/gemini/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-🚀 Powered by Google Gemini AI
+</div>
 
 ---
+
+Nexus is an advanced resume analysis platform that bridges the gap between candidates and Applicant Tracking Systems (ATS). By leveraging precise NLP regex parsing and **Google Gemini 2.5 Flash**, the engine scores resumes against target job descriptions and generates structured, actionable career roadmaps.
 
 ## 🚀 Live Demo
 
-🔗 Try the app here:  
-https://dev-ai-resume-analyzer.streamlit.app/
+🔗 **Try the application here:** [Nexus AI Resume Analyzer](https://dev-ai-resume-analyzer.streamlit.app/)
 
 ---
 
-## ✨ Features
+## ✨ Advanced Features
 
-- 📄 PDF Resume Upload & Text Extraction
-- 🎯 ATS Compatibility Score Calculation
-- 🔍 Resume Skill Extraction
-- 📌 Missing Keyword Detection
-- 🤖 AI Resume Review using Gemini AI
-- 💬 AI Resume Chat Assistant
-- 🗺 Personalized Career Roadmap Generator
-- 💼 Preloaded Job Description Templates
-  - AI/ML Intern
-  - Data Analyst Intern
-  - Software Developer Intern
-  - Marketing Intern
-- 📝 Custom Job Description Support
-- 🌐 Cloud Deployed Application
+* **Interactive Analytics Dashboard:** Real-time ATS compatibility scoring utilizing `Plotly` gauge charts and responsive glassmorphism UI.
+* **Zero-False-Positive NLP Engine:** Custom-built skill extraction using Regex word-boundary matrices and dynamic alias matching (e.g., equates "AWS" to "Amazon Web Services").
+* **Structured AI Critiques:** Forces strict `application/json` outputs from Gemini to populate dynamic "Before & After" bullet-point surgery components.
+* **Persistent Conversational AI:** A native, state-managed chat interface to ask granular questions about your resume strategy.
+* **Fault-Tolerant Processing:** Built-in fallback mechanisms for PDF parsing (`pdfplumber` → `PyPDF2`) and API key management (Local `.env` → Streamlit Secrets).
 
 ---
 
-## 🧠 AI Capabilities
+## 🛠️ Technology Stack
 
-### Resume Review
-
-The AI analyzes:
-
-- Resume strengths
-- Weak areas
-- Missing technologies
-- Project improvements
-- ATS optimization tips
-
-
-### Resume Chat Assistant
-
-Ask questions like:
-
-- "How can I improve my resume?"
-- "What projects should I build?"
-- "Which skills am I missing?"
-
-
-### Career Roadmap
-
-Generates:
-
-- Weekly learning plan
-- Skill improvement path
-- Project recommendations
-- Interview preparation steps
+| Category | Technology |
+| :--- | :--- |
+| **Language** | Python |
+| **Frontend UI** | Streamlit, Plotly Graph Objects |
+| **AI / LLM** | Google GenAI SDK (Gemini 2.5 Flash) |
+| **Document Processing** | pdfplumber, PyPDF2 |
+| **Text Analytics** | Native Regex, Custom NLP Matrix |
 
 ---
 
-## 🛠️ Tech Stack
+## ⚙️ Architecture & Data Flow
 
-### Programming Language
-- Python
-
-
-### Framework
-- Streamlit
-
-
-### Artificial Intelligence
-- Google Gemini API
-
-
-### NLP & Processing
-- pdfplumber
-- spaCy
-- Regex
-- Text Processing
-
-
-### Development Tools
-- Git
-- GitHub
-- Streamlit Cloud
+1. **Ingestion:** User uploads a PDF; engine attempts extraction, rewinding the byte-stream to a fallback parser if necessary.
+2. **Standardization:** Text is cleaned, normalized, and stripped of edge-case punctuation.
+3. **Cross-Referencing:** The NLP engine scans the profile against a massive global skill database, factoring in syntax aliases and synonyms.
+4. **LLM Evaluation:** A strictly prompted Gemini agent evaluates the parsed data against target job metrics, returning a validated JSON response.
+5. **Visualization:** `st.session_state` preserves the data while Streamlit renders interactive tabs, charts, and expandable critique metrics.
 
 ---
 
-## ⚙️ How It Works
+## 💻 Local Installation
 
-1. User uploads a resume PDF
+**1. Clone the repository:**
+```bash
+git clone [https://github.com/dev-mangukiya/AI-Resume-Analyzer.git](https://github.com/dev-mangukiya/AI-Resume-Analyzer.git)
+cd AI-Resume-Analyzer
 
-2. Resume text is extracted using PDF parsing
+```
 
-3. NLP extracts skills and important keywords
+**2. Create a virtual environment (Recommended):**
 
-4. User selects a job role or enters a custom job description
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 
-5. Resume is compared with job requirements
+```
 
-6. Gemini AI generates personalized feedback
+**3. Install dependencies:**
 
-7. User receives:
+```bash
+pip install -r requirements.txt
 
-   - ATS Score
-   - Skills Found
-   - Missing Keywords
-   - AI Resume Suggestions
-   - Career Roadmap
+```
 
+**4. Configure Environment Variables:**
+Create a `.streamlit` folder and a `secrets.toml` file to securely store your API key.
 
----
+```bash
+mkdir -p .streamlit
+echo 'GOOGLE_API_KEY = "your_actual_api_key_here"' > .streamlit/secrets.toml
 
-## 📸 Screenshots
+```
 
-### 🏠 Home Page
+**5. Initialize the Engine:**
 
-![Home Page](images/home.png)
+```bash
+streamlit run app.py
 
-
-### 📊 Resume Analysis Dashboard
-
-![Resume Analysis](images/result1.png)
-
-
-### 🤖 AI Resume Review & Career Assistant
-
-![AI Features](images/result2.png)
+```
 
 ---
 
 ## 📂 Project Structure
 
-
 ```text
 AI-Resume-Analyzer/
-
-│── app.py
-│── requirements.txt
-│── README.md
-│── .gitignore
-
+│── app.py                  # Main Streamlit dashboard and UI logic
+│── requirements.txt        # Optimized deployment dependencies
+│── README.md               
+├── .streamlit/             
+│   └── secrets.toml        # Local API Key storage (Git-ignored)
 ├── utils/
-
-│   ├── ai_client.py
-│   ├── pdf_parser.py
-│   ├── nlp_utils.py
-│   └── scorer.py
-
+│   ├── ai_client.py        # Gemini JSON prompting and chat logic
+│   ├── pdf_parser.py       # Fault-tolerant document extraction
+│   ├── nlp_utils.py        # Regex word boundaries and Alias Matrix
+│   └── scorer.py           # ATS algorithmic scoring calculation
 ├── data/
+│   └── skills_db.py        # Master dictionary of tech stack keywords
 
-│   └── skills_db.py
-
-├── images/
-
-│   ├── home.png
-│   └── result.png
 ```
 
 ---
 
-## ⚙️ Installation
+## 🔮 Future Roadmap
 
-
-Clone repository:
-
-```bash
-git clone https://github.com/dev-mangukiya/AI-Resume-Analyzer.git
-```
-
-
-Open project:
-
-```bash
-cd AI-Resume-Analyzer
-```
-
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-
-Run application:
-
-```bash
-streamlit run app.py
-```
-
----
-
-## 🔑 Environment Variables
-
-
-Create a `.env` file:
-
-
-```env
-GOOGLE_API_KEY=your_gemini_api_key
-```
-
-For Streamlit deployment add it in Secrets.
-
----
-
-## 🔮 Future Improvements
-
-- User authentication
-- Resume history tracking
-- Downloadable AI reports
-- Resume comparison system
-- Interview question generator
-- Advanced analytics dashboard
+* [ ] **Database Integration:** Implement Supabase/Firebase for user authentication and historical resume tracking.
+* [ ] **Exportable Reports:** Generate downloadable PDF reports of the AI's critique.
+* [ ] **Automated Interview Prep:** Dynamically generate technical screening questions based on the candidate's missing skill vectors.
 
 ---
 
 ## 👨‍💻 Developer
 
-Built by **Dev Mangukiya**
+**Dev Mangukiya** *AI & Data Science Student | Passionate about Machine Learning and Software Architecture*
 
-AI & Data Science Student  
-Passionate about AI, Machine Learning and Software Development
-
-
-Connect with me:
-
-LinkedIn: www.linkedin.com/in/devmangukiya
-
-GitHub: https://github.com/dev-mangukiya
+* **LinkedIn:** [devmangukiya](https://www.google.com/search?q=https://www.linkedin.com/in/devmangukiya)
+* **GitHub:** [dev-mangukiya](https://github.com/dev-mangukiya)
 
 ---
 
-⭐ If you like this project, consider giving it a star!
+*⭐ If you found this architecture helpful, consider giving the repository a star!*
+
+```
+
+```
+
