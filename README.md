@@ -129,7 +129,7 @@ AI-Resume-Analyzer/
 
 **Dev Mangukiya** *AI & Data Science Student | Passionate about Machine Learning and Software Architecture*
 
-* **LinkedIn:** [devmangukiya](https://www.google.com/search?q=https://www.linkedin.com/in/devmangukiya)
+* **LinkedIn:** [devmangukiya](https://www.linkedin.com/in/devmangukiya)
 * **GitHub:** [dev-mangukiya](https://github.com/dev-mangukiya)
 
 ---
