@@ -1,16 +1,11 @@
-```markdown
-<div align="center">
-  
 # ⚡ Nexus | AI Resume Intelligence Engine
 
-*A production-grade, AI-powered ATS scanner and career strategy platform.*
+### *A production-grade, AI-powered ATS scanner and career strategy platform.*
 
 [![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.32+-red.svg)](https://streamlit.io/)
 [![Gemini](https://img.shields.io/badge/Google_Gemini-2.5_Flash-orange.svg)](https://deepmind.google/technologies/gemini/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-
-</div>
 
 ---
 
@@ -135,8 +130,3 @@ AI-Resume-Analyzer/
 ---
 
 *⭐ If you found this architecture helpful, consider giving the repository a star!*
-
-```
-
-```
-
