@@ -197,7 +197,8 @@ if st.session_state.resume_text:
         with c1:
             st.plotly_chart(draw_gauge(st.session_state.ats_score), use_container_width=True)
         with c2:
-            st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+            # We remove the raw HTML glass-card here because Streamlit components 
+            # like st.success and st.expander cannot be wrapped this way.
             st.subheader("🛠️ Skill Matrix")
             st.success(f"✅ Found {len(st.session_state.skills)} keywords")
             st.error(f"⚠️ Missing {len(st.session_state.missing)} keywords")
@@ -207,7 +208,6 @@ if st.session_state.resume_text:
                 st.caption(", ".join(st.session_state.skills))
                 st.markdown("**Target Skills Missing:**")
                 st.caption(", ".join(st.session_state.missing))
-            st.markdown('</div>', unsafe_allow_html=True)
 
     with t2:
         review_data = st.session_state.ai_review
@@ -215,23 +215,16 @@ if st.session_state.resume_text:
         if "error" in review_data:
             st.error(f"Analysis failed: {review_data['error']}")
         else:
-            st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-            st.markdown(f"### 🎯 Executive Summary\n> *{review_data.get('executive_summary', '')}*")
-            st.markdown('</div>', unsafe_allow_html=True)
+            exec_summary = review_data.get('executive_summary', '')
+            st.markdown(f'<div class="glass-card"><h3>🎯 Executive Summary</h3><p><em>{exec_summary}</em></p></div>', unsafe_allow_html=True)
             
             col_s, col_w = st.columns(2)
             with col_s:
-                st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-                st.markdown("#### 💪 Core Strengths")
-                for s in review_data.get('strengths', []): 
-                    st.markdown(f"✅ {s}")
-                st.markdown('</div>', unsafe_allow_html=True)
+                strengths = "".join([f"<p>✅ {s}</p>" for s in review_data.get('strengths', [])])
+                st.markdown(f'<div class="glass-card"><h4>💪 Core Strengths</h4>{strengths}</div>', unsafe_allow_html=True)
             with col_w:
-                st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-                st.markdown("#### 🚩 Risk Areas")
-                for w in review_data.get('weaknesses', []): 
-                    st.markdown(f"⚠️ {w}")
-                st.markdown('</div>', unsafe_allow_html=True)
+                weaknesses = "".join([f"<p>⚠️ {w}</p>" for s in review_data.get('weaknesses', [])])
+                st.markdown(f'<div class="glass-card"><h4>🚩 Risk Areas</h4>{weaknesses}</div>', unsafe_allow_html=True)
             
             st.markdown("#### ✍️ Bullet Point Surgery")
             for bullet in review_data.get('bullet_point_improvements', []):
