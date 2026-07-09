@@ -223,7 +223,7 @@ if st.session_state.resume_text:
                 strengths = "".join([f"<p>✅ {s}</p>" for s in review_data.get('strengths', [])])
                 st.markdown(f'<div class="glass-card"><h4>💪 Core Strengths</h4>{strengths}</div>', unsafe_allow_html=True)
             with col_w:
-                weaknesses = "".join([f"<p>⚠️ {w}</p>" for s in review_data.get('weaknesses', [])])
+                weaknesses = "".join([f"<p>⚠️ {w}</p>" for w in review_data.get('weaknesses', [])])
                 st.markdown(f'<div class="glass-card"><h4>🚩 Risk Areas</h4>{weaknesses}</div>', unsafe_allow_html=True)
             
             st.markdown("#### ✍️ Bullet Point Surgery")
