@@ -123,11 +123,6 @@ with st.sidebar:
     st.markdown("<h2 style='text-align: center;'><span class='gradient-text'>⚡ Nexus Config</span></h2>", unsafe_allow_html=True)
     st.divider()
     
-    # API Key Configuration
-    api_key = st.text_input("Google Gemini API Key", type="password", placeholder="Enter key (optional if in .env)")
-    if api_key:
-        os.environ["GOOGLE_API_KEY"] = api_key
-        
     st.markdown("### 🎯 Target Role")
     jd_templates = {
         "AWS Cloud Infrastructure Engineer": "Looking for a Cloud Engineer skilled in AWS Well-Architected Framework, EC2, S3, Docker, Kubernetes, CI/CD, Python, and Infrastructure as Code.",
