@@ -40,16 +40,11 @@ def calculate_ats_score(resume_skills, missing_skills, resume_text):
 
 
     # 3. Resume length check (20 points)
-
-    word_count = len(
-        resume_text.split()
-    )
-
+    word_count = len(resume_text.split())
 
     if 300 <= word_count <= 1000:
         score += 20
-
-    elif word_count > 100:
+    elif 100 < word_count < 300 or word_count > 1000:
         score += 10
 
 

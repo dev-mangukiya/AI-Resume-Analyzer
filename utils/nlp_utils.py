@@ -66,9 +66,10 @@ def extract_skills(text: str) -> list:
             # Handle special characters natively without breaking regex engines
             escaped_variant = re.escape(variant)
             
-            # \b handles clean word boundaries. 
-            # We add alternative check for starting/ending punctuation variations
-            pattern = r'(?:^|[\b\s,./;:])' + escaped_variant + r'(?:$|[\b\s,./;:])'
+            # We use an explicit check for starting/ending spacing or punctuation
+            # instead of \b, which misbehaves for skills with special chars (e.g., C++, C#)
+            # and inside character classes [\b] actually matches backspace.
+            pattern = r'(?:^|[\s,./;:|-])' + escaped_variant + r'(?:$|[\s,./;:|-])'
             
             if re.search(pattern, normalized_text):
                 found_skills.add(skill)

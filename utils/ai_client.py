@@ -14,10 +14,9 @@ def get_ai_client():
     """
     api_key = None
     
-    try:
-        api_key = st.secrets.get("GOOGLE_API_KEY")
-    except Exception:
-        pass
+    # Safely check Streamlit secrets without throwing an exception if the file doesn't exist
+    if hasattr(st, "secrets") and "GOOGLE_API_KEY" in st.secrets:
+        api_key = st.secrets["GOOGLE_API_KEY"]
         
     if not api_key:
         api_key = os.getenv("GOOGLE_API_KEY")
@@ -79,7 +78,17 @@ def generate_resume_review(resume_text, job_description, skills, missing_skills,
                 response_mime_type="application/json",
             )
         )
-        return json.loads(response.text)
+        
+        # Ensure we don't trip on markdown blocks just in case the LLM ignored mime_type directives
+        raw_text = response.text.strip()
+        if raw_text.startswith("```json"):
+            raw_text = raw_text[7:]
+        if raw_text.startswith("```"):
+            raw_text = raw_text[3:]
+        if raw_text.endswith("```"):
+            raw_text = raw_text[:-3]
+            
+        return json.loads(raw_text.strip())
     except Exception as e:
         return {"error": str(e)}
 
