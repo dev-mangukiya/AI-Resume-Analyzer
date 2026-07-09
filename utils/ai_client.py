@@ -122,3 +122,91 @@ def chat_with_resume(question, resume_text, job_description, skills, missing):
         return response.text
     except Exception as e:
         return f"Error executing request: {e}"
+
+def parse_resume_structure(resume_text):
+    """
+    Parses the raw resume text into a structured JSON ATS format.
+    """
+    client = get_ai_client()
+    if not client:
+        return {"error": "API Key required for structural parsing."}
+
+    prompt = f"Parse this resume into structured data:\n\n{resume_text[:5000]}"
+    
+    try:
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                system_instruction="""You are a strict ATS parser. Extract the resume into this exact JSON schema:
+                {
+                    "personal_info": {"name": "string", "email": "string", "phone": "string", "links": ["string"]},
+                    "education": [{"degree": "string", "institution": "string", "year": "string"}],
+                    "work_experience": [{"title": "string", "company": "string", "duration": "string", "highlights": ["string"]}],
+                    "projects": [{"name": "string", "description": "string"}],
+                    "certifications": ["string"]
+                }
+                If a field is missing, use an empty string or empty array.
+                """,
+                temperature=0.1,
+                response_mime_type="application/json",
+            )
+        )
+        raw_text = response.text.strip()
+        if raw_text.startswith("```json"): raw_text = raw_text[7:]
+        if raw_text.startswith("```"): raw_text = raw_text[3:]
+        if raw_text.endswith("```"): raw_text = raw_text[:-3]
+        return json.loads(raw_text.strip())
+    except Exception as e:
+        return {"error": str(e)}
+
+def generate_cover_letter(resume_text, job_description):
+    """
+    Generates a tailored cover letter based on the resume and job description.
+    """
+    client = get_ai_client()
+    if not client:
+        return "API Key required for Cover Letter generation."
+
+    prompt = f"Resume:\n{resume_text[:4000]}\n\nJob Description:\n{job_description}"
+    
+    try:
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                system_instruction="""You are an expert career coach. Write a highly tailored, professional cover letter 
+                based on the candidate's resume and the target job description. Do NOT use placeholder brackets like [Company Name] 
+                if the data is unavailable; instead, write it so it flows naturally without needing placeholders. 
+                Keep it to 3-4 impactful paragraphs.""",
+                temperature=0.6,
+            )
+        )
+        return response.text
+    except Exception as e:
+        return f"Error: {e}"
+
+def generate_interview_prep(resume_text, job_description, missing_skills):
+    """
+    Generates targeted technical interview questions to prep for weak spots.
+    """
+    client = get_ai_client()
+    if not client:
+        return "API Key required for Interview Prep generation."
+
+    prompt = f"Resume:\n{resume_text[:3000]}\n\nJob:\n{job_description}\n\nMissing Skills: {missing_skills}"
+    
+    try:
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                system_instruction="""You are a senior technical interviewer. Based on the candidate's missing skills 
+                and the job description, generate 5 challenging, highly specific technical interview questions 
+                they are likely to be asked to compensate for their weak spots. Provide an 'Ideal Answer Strategy' for each.""",
+                temperature=0.7,
+            )
+        )
+        return response.text
+    except Exception as e:
+        return f"Error: {e}"
