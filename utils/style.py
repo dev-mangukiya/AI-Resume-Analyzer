@@ -10,7 +10,6 @@ def inject_custom_css():
             100% { background-position: 0% 50%; }
         }
         
-        /* Force Dark Mode / Glassmorphism Colors */
         html, body, [class*="st-"] {
             background-color: transparent !important;
         }
@@ -19,7 +18,6 @@ def inject_custom_css():
             background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #1e3a8a, #0f172a) !important;
             background-size: 400% 400% !important;
             animation: fluidGradient 15s ease infinite !important;
-            color: #f8fafc !important;
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', sans-serif !important;
         }
 
@@ -29,11 +27,6 @@ def inject_custom_css():
             backdrop-filter: blur(24px) saturate(180%) !important;
             -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
             border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
-        }
-        
-        /* Sidebar collapse button */
-        [data-testid="stSidebarCollapseButton"] {
-            color: #fff !important;
         }
 
         /* Main app header */
@@ -69,18 +62,12 @@ def inject_custom_css():
             box-shadow: 0 15px 40px 0 rgba(0, 242, 254, 0.2) !important;
         }
 
-        /* Force ALL text to be light to combat light mode defaults */
-        h1, h2, h3, h4, h5, h6, p, span, div, label, li, a {
-            color: #f8fafc !important;
-        }
-
         /* Typography tweaks for iOS feel */
         h1, h2, h3, h4, h5, h6 {
             font-weight: 700 !important;
             letter-spacing: -0.02em !important;
         }
         p, span, div, label, li {
-            font-weight: 400 !important;
             letter-spacing: 0.01em !important;
         }
         .subtitle {
@@ -107,10 +94,6 @@ def inject_custom_css():
             border: 1px solid rgba(255, 255, 255, 0.2) !important;
             border-radius: 20px !important;
         }
-        [data-testid="stChatInput"] textarea {
-            color: #fff !important;
-            background: transparent !important;
-        }
         [data-testid="stChatInput"] button {
             background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%) !important;
             border-radius: 50% !important;
@@ -121,9 +104,6 @@ def inject_custom_css():
         }
 
         /* JSON View / ATS Data Fixed */
-        [data-testid="stJson"], [data-testid="stJson"] * {
-            background-color: transparent !important;
-        }
         [data-testid="stJson"] {
             background: rgba(0, 0, 0, 0.3) !important;
             backdrop-filter: blur(12px) saturate(180%) !important;
@@ -167,7 +147,6 @@ def inject_custom_css():
             backdrop-filter: blur(10px) !important;
             -webkit-backdrop-filter: blur(10px) !important;
             border: 1px solid rgba(255, 255, 255, 0.1) !important;
-            color: white !important;
             border-radius: 12px !important;
             transition: all 0.3s ease !important;
         }
@@ -185,7 +164,6 @@ def inject_custom_css():
             background: rgba(20, 20, 30, 0.9) !important;
             backdrop-filter: blur(20px) !important;
             border: 1px solid rgba(255, 255, 255, 0.1) !important;
-            color: white !important;
         }
 
         /* File Uploader */
@@ -200,12 +178,10 @@ def inject_custom_css():
         [data-testid="stFileUploader"] > div, [data-testid="stFileUploader"] > section {
             background: transparent !important;
         }
-        /* Hide default file uploader button to make it cleaner */
         [data-testid="stFileUploader"] button {
             background: rgba(255, 255, 255, 0.1) !important;
             border: 1px solid rgba(255, 255, 255, 0.15) !important;
             border-radius: 99px !important;
-            color: white !important;
         }
 
         /* Expander */
