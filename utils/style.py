@@ -10,7 +10,7 @@ def inject_custom_css():
             100% { background-position: 0% 50%; }
         }
         
-        html, body, [class*="st-"] {
+        html, body {
             background-color: transparent !important;
         }
 
@@ -160,10 +160,18 @@ def inject_custom_css():
         }
         
         /* Selectbox Dropdown menu */
-        div[data-baseweb="popover"] > div {
-            background: rgba(20, 20, 30, 0.9) !important;
-            backdrop-filter: blur(20px) !important;
+        div[data-baseweb="popover"] > div,
+        div[data-baseweb="popover"] ul {
+            background: rgba(15, 23, 42, 0.95) !important;
+            backdrop-filter: blur(24px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
             border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            border-radius: 12px !important;
+        }
+        
+        /* Dropdown options hover */
+        div[data-baseweb="popover"] ul li:hover {
+            background: rgba(255, 255, 255, 0.1) !important;
         }
 
         /* File Uploader */
