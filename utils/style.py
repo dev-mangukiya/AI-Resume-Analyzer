@@ -52,7 +52,7 @@ def inject_custom_css():
         }
 
         /* Glassmorphism Cards */
-        .glass-card, div[data-testid="stMetric"], .stChatInputContainer {
+        .glass-card, div[data-testid="stMetric"] {
             background: rgba(255, 255, 255, 0.05) !important;
             backdrop-filter: blur(16px) saturate(180%) !important;
             -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
@@ -97,6 +97,41 @@ def inject_custom_css():
             border-radius: 16px !important;
             border: 1px solid rgba(255, 255, 255, 0.08) !important;
             margin-bottom: 12px !important;
+        }
+
+        /* Chat Input Fixed */
+        [data-testid="stChatInput"] {
+            background: rgba(0, 0, 0, 0.4) !important;
+            backdrop-filter: blur(16px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 20px !important;
+        }
+        [data-testid="stChatInput"] textarea {
+            color: #fff !important;
+            background: transparent !important;
+        }
+        [data-testid="stChatInput"] button {
+            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%) !important;
+            border-radius: 50% !important;
+            border: none !important;
+        }
+        [data-testid="stChatInput"] svg {
+            fill: #000 !important;
+        }
+
+        /* JSON View / ATS Data Fixed */
+        [data-testid="stJson"], [data-testid="stJson"] * {
+            background-color: transparent !important;
+        }
+        [data-testid="stJson"] {
+            background: rgba(0, 0, 0, 0.3) !important;
+            backdrop-filter: blur(12px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(12px) saturate(180%) !important;
+            border-radius: 16px !important;
+            padding: 20px !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
         }
 
         /* Buttons */
