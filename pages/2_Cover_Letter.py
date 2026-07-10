@@ -25,9 +25,8 @@ else:
             with st.spinner("Drafting your cover letter..."):
                 cover_letter = generate_cover_letter(st.session_state.resume_text, job_desc)
                 
-                st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-                st.markdown(cover_letter)
-                st.markdown('</div>', unsafe_allow_html=True)
+                with st.container(border=True):
+                    st.markdown(cover_letter)
                 
                 st.download_button(
                     label="Download as Text",

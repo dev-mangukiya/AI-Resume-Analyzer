@@ -45,7 +45,7 @@ def inject_custom_css():
         }
 
         /* Glassmorphism Cards */
-        .glass-card, div[data-testid="stMetric"] {
+        .glass-card, div[data-testid="stMetric"], [data-testid="stVerticalBlockBorderWrapper"] {
             background: rgba(255, 255, 255, 0.05) !important;
             backdrop-filter: blur(16px) saturate(180%) !important;
             -webkit-backdrop-filter: blur(16px) saturate(180%) !important;

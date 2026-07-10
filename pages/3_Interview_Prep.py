@@ -29,6 +29,5 @@ else:
                     missing_skills_str
                 )
                 
-                st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-                st.markdown(prep_material)
-                st.markdown('</div>', unsafe_allow_html=True)
+                with st.container(border=True):
+                    st.markdown(prep_material)
