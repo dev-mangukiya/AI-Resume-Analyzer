@@ -6,41 +6,8 @@ st.set_page_config(
     layout="wide",
 )
 
-st.markdown("""
-    <style>
-    .stApp {
-        background-color: #0d1117;
-        color: #c9d1d9;
-        font-family: 'Inter', sans-serif;
-    }
-    .gradient-text {
-        background: linear-gradient(to right, #00f2fe, #4facfe);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-weight: 900;
-        font-size: 4rem;
-    }
-    .subtitle {
-        color: #8b949e;
-        font-size: 1.5rem;
-        margin-bottom: 3rem;
-    }
-    .glass-card {
-        background: rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 16px;
-        padding: 30px;
-        text-align: center;
-        transition: transform 0.3s ease;
-    }
-    .glass-card:hover {
-        transform: translateY(-5px);
-        border-color: rgba(0, 242, 254, 0.3);
-    }
-    </style>
-""", unsafe_allow_html=True)
+from utils.style import inject_custom_css
+inject_custom_css()
 
 st.markdown("<h1 style='text-align: center;'><span class='gradient-text'>Nexus AI</span></h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center;' class='subtitle'>The Ultimate AI-Powered Career Arsenal</p>", unsafe_allow_html=True)

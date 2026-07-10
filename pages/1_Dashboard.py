@@ -13,71 +13,8 @@ from utils.ai_client import generate_resume_review, chat_with_resume, parse_resu
 # -------------------------------
 st.set_page_config(page_title="Nexus | AI Resume", page_icon="⚡", layout="wide")
 
-st.markdown("""
-    <style>
-    /* Global Background and Typography */
-    .stApp {
-        background-color: #0d1117;
-        color: #c9d1d9;
-        font-family: 'Inter', sans-serif;
-    }
-    
-    /* Modern Glassmorphism Cards */
-    .glass-card {
-        background: rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 16px;
-        padding: 24px;
-        margin-bottom: 24px;
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .glass-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 40px rgba(0, 242, 254, 0.15);
-        border: 1px solid rgba(0, 242, 254, 0.3);
-    }
-    
-    /* Accent Buttons */
-    .stButton>button {
-        background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-        color: #000000 !important;
-        font-weight: 800;
-        border-radius: 12px;
-        border: none;
-        padding: 0.6rem 1.2rem;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
-    }
-    .stButton>button:hover {
-        transform: scale(1.03);
-        box-shadow: 0 6px 20px rgba(0, 242, 254, 0.5);
-    }
-    
-    /* Custom Metric Styling */
-    div[data-testid="stMetricValue"] {
-        font-size: 2.2rem;
-        font-weight: 800;
-        color: #00f2fe;
-    }
-    
-    /* Header Gradient */
-    .gradient-text {
-        background: linear-gradient(to right, #00f2fe, #4facfe);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-weight: 900;
-    }
-    
-    /* Sidebar Styling */
-    section[data-testid="stSidebar"] {
-        background-color: #161b22;
-        border-right: 1px solid rgba(255,255,255,0.05);
-    }
-    </style>
-""", unsafe_allow_html=True)
+from utils.style import inject_custom_css
+inject_custom_css()
 
 # -------------------------------
 # State Management

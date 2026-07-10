@@ -3,20 +3,8 @@ from utils.ai_client import generate_interview_prep
 
 st.set_page_config(page_title="Interview Prep | Nexus", page_icon="🎤", layout="wide")
 
-st.markdown("""
-    <style>
-    .stApp { background-color: #0d1117; color: #c9d1d9; font-family: 'Inter', sans-serif; }
-    .glass-card {
-        background: rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 16px; padding: 30px; margin-top: 20px;
-    }
-    .stButton>button {
-        background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-        color: #000; font-weight: 800; border-radius: 12px; border: none;
-    }
-    </style>
-""", unsafe_allow_html=True)
+from utils.style import inject_custom_css
+inject_custom_css()
 
 st.title("🎤 Technical Interview Simulator")
 st.markdown("Generate brutal technical interview questions targeting your specific weak spots and missing skills.")
